@@ -15,6 +15,7 @@
 #### Throughput in Mbs = '(Total Read Throughput bytes + Total Read Throughput bytes)/60/1024/1024'  
 
 ## 1 Install:  
+### git clone https://github.com/vaughngit/aws-ts-cloudwatch-dashboard.git
 ### cd aws-ts-cloudwatch-dashboard/
 ### npm install 
 
