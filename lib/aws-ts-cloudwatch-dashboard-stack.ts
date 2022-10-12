@@ -95,7 +95,7 @@ export class AwsTsCloudwatchDashboardStack extends cdk.Stack {
 
       // Create CloudWatch Dashboard
       const dashboard = new Dashboard(this, "DemoDashboard", {
-        dashboardName: props.dashboardName, 
+        dashboardName: props.dashboardName,
       })
 
       // Create Title for Dashboard

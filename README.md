@@ -14,14 +14,17 @@
 
 #### Throughput in Mbs = '(Total Read Throughput bytes + Total Read Throughput bytes)/60/1024/1024'  
 
+## 1 Install:  
+### cd aws-ts-cloudwatch-dashboard/
+### npm install 
 
-## To Run: 
-    1- Update Variables in /bin/cdk-app-stack-deploy.ts 
-    2- From within project directory run: 
-        cdk deploy 
+## 2 Deploy: 
+###    Update Variables in: /bin/cdk-app-stack-deploy.ts
 
-## To Destroy:
-    cdk destroy 
+### cdk deploy 
+
+## 3 Delete:
+###    cdk destroy 
 
 
 
