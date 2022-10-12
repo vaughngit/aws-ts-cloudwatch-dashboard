@@ -15,7 +15,13 @@
 #### Throughput in Mbs = '(Total Read Throughput bytes + Total Read Throughput bytes)/60/1024/1024'  
 
 
+## To Run: 
+    1- Update Variables in /bin/cdk-app-stack-deploy.ts 
+    2- From within project directory run: 
+        cdk deploy 
 
+## To Destroy:
+    cdk destroy 
 
 
 
