@@ -27,18 +27,7 @@ export class AwsTsCloudwatchDashboardStack extends cdk.Stack {
     const volumeReadOpsMetric = new Metric({
       metricName: "VolumeReadOps",
       namespace: "AWS/EBS",
-      label: 'DemoVolumeReadOperations',
-      dimensionsMap: {
-        'VolumeId': props.VolumeId
-      },
-      statistic: 'Sum',
-      period: Duration.minutes(1)
-    })
-    //Measure Writes: 
-    const volumeWriteOpsMetric = new Metric({
-      metricName: "VolumeWriteOps",
-      namespace: "AWS/EBS",
-      label: 'DemoVolumeWriteOperations',
+      label: "DemoVolumeReadOperations",
       dimensionsMap: {
         'VolumeId': props.VolumeId
       },
@@ -46,11 +35,23 @@ export class AwsTsCloudwatchDashboardStack extends cdk.Stack {
       period: Duration.minutes(1)
     })
 
+    //Measure Writes: 
+    const volumeWriteOpsMetric = new Metric({
+      metricName: "VolumeWriteOps",
+      namespace: "AWS/EBS",
+      label: "DemoVolumeWriteOperations",
+      dimensionsMap: {
+        'VolumeId': props.VolumeId
+      },
+      statistic: "Sum",
+      period: Duration.minutes(1)
+    })
+
     //Calculate IOPS
     //Measure IOPS: ( EBSWriteOps + EBSReadOps) = EBSIOPS
-    const volumeIopsMetric = new MathExpression({
-      expression: '(readOps+writeOps)/60', 
-      label: 'Volume IOPS', 
+    const volumeIopsCalc = new MathExpression({
+      expression: "(readOps+writeOps)/60", 
+      label: "Volume IOPS", 
       usingMetrics: { readOps: volumeReadOpsMetric, writeOps: volumeWriteOpsMetric }, 
       period: Duration.minutes(1),
     });
@@ -61,30 +62,30 @@ export class AwsTsCloudwatchDashboardStack extends cdk.Stack {
         const volumeReadThroughputMetric = new Metric({
           metricName: "VolumeReadBytes",
           namespace: "AWS/EBS",
-          label: 'DemoVolumeReadThroughput',
+          label: "DemoVolumeReadThroughput",
           dimensionsMap: {
             'VolumeId': props.VolumeId
           },
-          statistic: 'Sum',
+          statistic: "Sum",
           period: Duration.minutes(1)
         })
         //Measure Writes: 
         const volumeWriteThroughputMetric = new Metric({
           metricName: "VolumeWriteBytes",
           namespace: "AWS/EBS",
-          label: 'DemoVolumeWriteThroughput',
+          label: "DemoVolumeWriteThroughput",
           dimensionsMap: {
             'VolumeId': props.VolumeId
           },
-          statistic: 'Sum',
+          statistic: "Sum",
           period: Duration.minutes(1)
         })
     
         //Calculate Throughput 
-        //Measure IOPS: ( EBSWriteOps + EBSReadOps) = EBSIOPS
-        const volumeThroughputMetric = new MathExpression({
-          expression: '(read+write)/60/1024/1024', //Return Total MBs
-          label: 'Volume Throughput in MBs/Sec', 
+        //Throughput in Mbs = '(Total Read Throughput bytes + Total Read Throughput bytes)/60/1024/1024' 
+        const volumeThroughputCalc = new MathExpression({
+          expression: "(read+write)/60/1024/1024", //Return Total MBs
+          label: "Volume Throughput in MBs/Sec", 
           usingMetrics: { read: volumeReadThroughputMetric, write: volumeWriteThroughputMetric }, 
           period: Duration.minutes(1),
         });
@@ -100,7 +101,7 @@ export class AwsTsCloudwatchDashboardStack extends cdk.Stack {
 
       // Create Title for Dashboard
       dashboard.addWidgets(new TextWidget({
-        markdown: `# Dashboard: Instance EBS Performance`,
+        markdown: "# Dashboard: Instance Volume Performance",
         height: 1,
         width: 24
       }))
@@ -108,7 +109,7 @@ export class AwsTsCloudwatchDashboardStack extends cdk.Stack {
     dashboard.addWidgets(new GraphWidget({
       title: "Volume IOPS Per Minute",
       width: 24,
-      left: [volumeIopsMetric], 
+      left: [volumeIopsCalc], 
       liveData: true, 
       statistic: "Average",
       view: GraphWidgetView.TIME_SERIES,
@@ -117,7 +118,7 @@ export class AwsTsCloudwatchDashboardStack extends cdk.Stack {
     dashboard.addWidgets(new GraphWidget({
       title: "Volume Throughput Per Minute",
       width: 24,
-      left: [volumeThroughputMetric], 
+      left: [volumeThroughputCalc], 
       liveData: true, 
       statistic: "Average",
       view: GraphWidgetView.TIME_SERIES,
@@ -144,7 +145,7 @@ export class AwsTsCloudwatchDashboardStack extends cdk.Stack {
 
         // Generate Outputs
         const cloudwatchDashboardURL = `https://${this.region}.console.aws.amazon.com/cloudwatch/home?region=${this.region}}#dashboards:name=${props.dashboardName}`;
-        new CfnOutput(this, 'DashboardOutput', {
+        new CfnOutput(this, "DashboardURL", {
           value: cloudwatchDashboardURL,
           description: 'URL of Demo CloudWatch Dashboard',
           exportName: 'DemoCloudWatchDashboardURL'
