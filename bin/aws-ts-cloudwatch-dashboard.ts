@@ -3,7 +3,8 @@ import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
 import { AwsTsCloudwatchDashboardStack } from '../lib/aws-ts-cloudwatch-dashboard-stack';
 
-const aws_region = 'us-east-2'
+const volumeId = "vol-xxxxxxxxxxxxxxxxx"
+const aws_region = "us-east-2"
 const solutionName = "cloudwatch-monitoring"
 const environment = "dev"
 const costcenter = "12_1_12_9_20_8"
@@ -17,9 +18,9 @@ new AwsTsCloudwatchDashboardStack(app, 'CWDashboard', {
     region: aws_region || process.env.CDK_DEFAULT_REGION,
     account: process.env.CDK_DEFAULT_ACCOUNT,
   },
-  stackName: 'CDK-Volume-Metric-Dashboard', 
+  stackName: "CDK-Volume-Metric-Dashboard", 
   serviceName: "cloudwatch-demo",
-  VolumeId: "vol-09722b3fea3a7dfb2", 
+  VolumeId: volumeId, 
   solutionName,
   environment,
   costcenter,
