@@ -1,7 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import { Duration, Stack, StackProps, CfnOutput, Aws } from "aws-cdk-lib";
-import { GraphWidget, Dashboard, LogQueryWidget, TextWidget, Metric, Dimension,   MathExpression, GraphWidgetView} from 'aws-cdk-lib/aws-cloudwatch';
+import { GraphWidget, Dashboard, LogQueryWidget, TextWidget, Metric, Dimension, MathExpressionOptions, MathExpressionProps,   MathExpression, GraphWidgetView, Color} from 'aws-cdk-lib/aws-cloudwatch';
 import {aws_ssm as ssm } from 'aws-cdk-lib' 
 import { Construct } from 'constructs';
 import { CfnDimension } from 'aws-cdk-lib/aws-iot';
